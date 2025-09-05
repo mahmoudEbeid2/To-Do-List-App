@@ -1,0 +1,227 @@
+/* ==== RESET ==== */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* ==== GENERAL STYLES ==== */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  text-align: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  gap: 15px;
+}
+
+#searchInput,
+#addInput,
+#editInput {
+  outline: none;
+  border: 1px solid #6c63ff;
+  padding: 12px 34px;
+  border-radius: 100px;
+  width: 70%;
+  font-size: 18px;
+}
+
+#searchInput::placeholder,
+#addInput::placeholder,
+#editInput::placeholder {
+  color: #6c63ff;
+}
+
+#searchInput:focus,
+#addInput:focus,
+#editInput:focus {
+  border: 1px solid #6b63ff25;
+}
+
+#searchInput:focus::placeholder,
+#addInput:focus::placeholder,
+#editInput:focus::placeholder {
+  color: #6b63ff25;
+}
+
+#searchButton {
+  outline: none;
+  border: 1px solid #6c63ff;
+  padding: 12px 34px;
+  border-radius: 100px;
+  background-color: #6c63ff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+#searchButton:hover {
+  background-color: #fff;
+  color: #6c63ff;
+}
+
+/* ==== TO-DO LIST ==== */
+.to-do-lists {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.lists {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  list-style: none;
+  font-size: 20px;
+  color: #6c63ff;
+  padding: 30px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #6c63ff;
+}
+
+.list {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.list:nth-child(n):not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.check-box {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.check-box:checked + label {
+  text-decoration: line-through;
+}
+
+.modify,
+.btns-add,
+.btns-edit {
+  display: flex;
+  gap: 10px;
+}
+
+.modify button,
+.btns-add button,
+.btns-edit button {
+  outline: none;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.edit,
+.addButton,
+.editButton {
+  background-color: #6c63ff;
+  color: #fff;
+  border: 1px solid #6c63ff;
+}
+
+.modify .edit:hover,
+.addButton:hover,
+.editButton:hover {
+  background-color: #fff;
+  color: #6c63ff;
+}
+
+.delete,
+.cancelButton,
+.cancelButtonEdit {
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  background-color: white;
+}
+
+.delete:hover,
+.cancelButton:hover,
+.cancelButtonEdit:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* ==== ADD TASK BUTTON ==== */
+.add-task {
+  padding: 20px;
+  background-color: #6c63ff;
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+  font-size: 25px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* ==== ADD TASK CONTAINER ==== */
+.add-task-cont,
+.edit-task-cont {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ==== ADD CONTENT CENTER BOX ==== */
+.add-content,
+.edit-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  padding: 30px;
+  background-color: white;
+  width: 35%;
+  z-index: 100;
+}
+
+/* ==== HEADINGS ==== */
+h2 {
+  font-size: 28px;
+}
