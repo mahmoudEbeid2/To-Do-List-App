@@ -14,8 +14,9 @@ body {
 
 .container {
   text-align: center;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 .title {
@@ -89,10 +90,11 @@ body {
   list-style: none;
   font-size: 20px;
   color: #6c63ff;
-  padding: 30px;
+  /* padding: 10px 50px; */
   width: 100%;
   border-radius: 10px;
   border: 1px solid #6c63ff;
+  padding: 20px 50px;
 }
 
 .list {
@@ -101,6 +103,12 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  border-radius: 10px;
+  padding: 20px 10px;
+}
+
+.list:nth-child(odd) {
+  background-color: #6c63ff25;
 }
 
 .list:nth-child(n):not(:last-child) {
@@ -173,8 +181,8 @@ input[type="checkbox"] {
 .add-task {
   padding: 20px;
   background-color: #6c63ff;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -183,8 +191,14 @@ input[type="checkbox"] {
   cursor: pointer;
   font-size: 25px;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 30px;
+}
+
+.add-task:hover {
+  background-color: #fff;
+  color: #6c63ff;
+  border: 1px solid #6c63ff;
 }
 
 /* ==== ADD TASK CONTAINER ==== */

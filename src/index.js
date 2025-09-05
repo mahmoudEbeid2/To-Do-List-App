@@ -1,16 +1,17 @@
+"use strict";
 // === Functions to handle localStorage ===
 // Get data from localStorage
 function getData() {
-    var storgeData = localStorage.getItem("toDoLists");
-    var data = storgeData ? JSON.parse(storgeData) : [];
+    const storgeData = localStorage.getItem("toDoLists");
+    const data = storgeData ? JSON.parse(storgeData) : [];
     return data;
 }
 // Save task to localStorage
 function saveTodoData(task) {
-    var storgeData = localStorage.getItem("toDoLists");
-    var data = storgeData ? JSON.parse(storgeData) : [];
+    const storgeData = localStorage.getItem("toDoLists");
+    const data = storgeData ? JSON.parse(storgeData) : [];
     // Add the new task to the array
-    data.unshift(task);
+    data.push(task);
     localStorage.setItem("toDoLists", JSON.stringify(data));
 }
 // save tasks to localStorage
@@ -18,42 +19,55 @@ function save(tasks) {
     localStorage.setItem("toDoLists", JSON.stringify(tasks));
 }
 // === UI Functions ===
+// Not found or empty list UI
+function notFoundUi() {
+    const lists = document.querySelector(".lists");
+    const imge = document.createElement("img");
+    imge.setAttribute("src", "../imge/empty.png");
+    imge.setAttribute("alt", "not-found");
+    lists.appendChild(imge);
+    lists.classList.add("not-found");
+    const notFound = document.querySelector(".not-found");
+    if (notFound) {
+        notFound.style.display = "block";
+    }
+}
 // Add To-Do list UI
 function addTdoListUi() {
     // Create the container for the "Add Task" form
-    var addContiner = document.createElement("div");
+    const addContiner = document.createElement("div");
     addContiner.classList.add("add-task-cont");
-    var container = document.querySelector(".container");
-    container === null || container === void 0 ? void 0 : container.appendChild(addContiner);
+    const container = document.querySelector(".container");
+    container?.appendChild(addContiner);
     // Create the content area inside the "Add Task" form
-    var addContent = document.createElement("div");
+    const addContent = document.createElement("div");
     addContent.classList.add("add-content");
     addContiner.appendChild(addContent);
     // Add title to the form
-    var addTitle = document.createElement("h2");
+    const addTitle = document.createElement("h2");
     addTitle.textContent = "Add Task";
     addContent.appendChild(addTitle);
     // Create the input field for entering the task text
-    var taskContent = document.createElement("input");
+    const taskContent = document.createElement("input");
     taskContent.setAttribute("type", "text");
     taskContent.setAttribute("id", "addInput");
     taskContent.setAttribute("placeholder", "Add Task");
     addContent.appendChild(taskContent);
     // Create buttons (Add and Cancel)
-    var addBtns = document.createElement("div");
+    const addBtns = document.createElement("div");
     addBtns.classList.add("btns-add");
     addContent.appendChild(addBtns);
-    var addBtn = document.createElement("button");
+    const addBtn = document.createElement("button");
     addBtn.classList.add("addButton");
     addBtn.setAttribute("id", "addButton");
     addBtn.textContent = "Add";
     addBtns.appendChild(addBtn);
-    var cancelAddBtn = document.createElement("button");
+    const cancelAddBtn = document.createElement("button");
     cancelAddBtn.classList.add("cancelButton");
     cancelAddBtn.setAttribute("id", "cancelAddButton");
     cancelAddBtn.textContent = "Cancel";
     addBtns.appendChild(cancelAddBtn);
-    var addInput = document.getElementById("addInput");
+    const addInput = document.getElementById("addInput");
     // Add event listener for cancel button to hide the form
     cancelAddBtn.addEventListener("click", function () {
         addInput.value = "";
@@ -61,10 +75,10 @@ function addTdoListUi() {
     });
     // Add event listener for add button to save the task and hide the form
     addBtn.addEventListener("click", function () {
-        var taskText = addInput.value.trim();
+        const taskText = addInput.value.trim();
         if (taskText) {
-            var tasks = getData(); // Get current tasks from localStorage
-            var newTask = {
+            const tasks = getData(); // Get current tasks from localStorage
+            const newTask = {
                 id: tasks.length + 1,
                 text: taskText,
                 completed: false,
@@ -78,30 +92,30 @@ function addTdoListUi() {
 }
 // edit task UI
 function editTaskUi(id) {
-    var editContiner = document.createElement("div");
+    const editContiner = document.createElement("div");
     editContiner.classList.add("edit-task-cont");
-    var container = document.querySelector(".container");
-    container === null || container === void 0 ? void 0 : container.appendChild(editContiner);
-    var editContent = document.createElement("div");
+    const container = document.querySelector(".container");
+    container?.appendChild(editContiner);
+    const editContent = document.createElement("div");
     editContent.classList.add("edit-content");
     editContiner.appendChild(editContent);
-    var editTitle = document.createElement("h2");
+    const editTitle = document.createElement("h2");
     editTitle.textContent = "Edit Task";
     editContent.appendChild(editTitle);
-    var taskContent = document.createElement("input");
+    const taskContent = document.createElement("input");
     taskContent.setAttribute("type", "text");
     taskContent.setAttribute("id", "editInput");
     taskContent.setAttribute("placeholder", "Edit Task");
     editContent.appendChild(taskContent);
-    var editBtns = document.createElement("div");
+    const editBtns = document.createElement("div");
     editBtns.classList.add("btns-edit");
     editContent.appendChild(editBtns);
-    var editBtn = document.createElement("button");
+    const editBtn = document.createElement("button");
     editBtn.classList.add("editButton");
     editBtn.setAttribute("id", "editButton");
-    editBtn.textContent = "Edit";
+    editBtn.textContent = "Save";
     editBtns.appendChild(editBtn);
-    var cancelEditBtn = document.createElement("button");
+    const cancelEditBtn = document.createElement("button");
     cancelEditBtn.classList.add("cancelButton");
     cancelEditBtn.setAttribute("id", "cancelEditButton");
     cancelEditBtn.textContent = "Cancel";
@@ -109,12 +123,12 @@ function editTaskUi(id) {
     cancelEditBtn.addEventListener("click", function () {
         editContiner.classList.add("hidden");
     });
-    var task = getData().find(function (task) { return task.id === id; });
+    const task = getData().find((task) => task.id === id);
     if (task) {
         taskContent.value = task.text;
     }
     editBtn.addEventListener("click", function () {
-        var taskText = taskContent.value.trim();
+        const taskText = taskContent.value.trim();
         editTask(id, taskText);
         editContiner.classList.add("hidden");
     });
@@ -123,84 +137,90 @@ function editTaskUi(id) {
 // Create the main UI elements (Title, Search, and Add Task button)
 function creatMainUi() {
     // Create the main title section
-    var titleDive = document.createElement("div");
+    const titleDive = document.createElement("div");
     titleDive.classList.add("main-title");
-    var title = document.createElement("h1");
+    const title = document.createElement("h1");
     title.classList.add("title");
     title.textContent = "TO-DO LIST";
     titleDive.appendChild(title);
     document.body.appendChild(titleDive);
     // Create the main container to hold all content
-    var container = document.createElement("div");
+    const container = document.createElement("div");
     container.classList.add("container");
     document.body.appendChild(container);
     // Create the search bar
-    var search = document.createElement("div");
+    const search = document.createElement("div");
     search.classList.add("search");
-    var searchInput = document.createElement("input");
+    const searchInput = document.createElement("input");
     searchInput.setAttribute("type", "text");
     searchInput.setAttribute("id", "searchInput");
     searchInput.setAttribute("placeholder", "Search");
-    var searchButton = document.createElement("button");
+    const searchButton = document.createElement("button");
     searchButton.setAttribute("id", "searchButton");
     searchButton.textContent = "Search";
     search.appendChild(searchInput);
     search.appendChild(searchButton);
     container.appendChild(search);
     // Create the Add Task button
-    var addTask = document.createElement("div");
+    const addTask = document.createElement("div");
     addTask.classList.add("add-task");
     addTask.textContent = "+";
     addTask.setAttribute("id", "addTask");
     container.appendChild(addTask);
+    // get data and check for empty list
     viewTodoList();
 }
 // === Task List Rendering ===
 // Display the to-do list (tasks) in the UI
-function viewTodoList() {
-    var tasks = getData();
+function viewTodoList(tasks) {
+    if (!tasks) {
+        tasks = getData();
+    }
     // Get the container to append the task list
-    var container = document.querySelector(".container");
+    const container = document.querySelector(".container");
     // Clear the current task list to avoid duplicate rendering
-    var existingList = container.querySelector(".to-do-lists");
+    const existingList = container.querySelector(".to-do-lists");
     if (existingList) {
         existingList.remove();
     }
     // Create the container for the task list
-    var addTaskCont = document.createElement("div");
+    const addTaskCont = document.createElement("div");
     addTaskCont.classList.add("to-do-lists");
     // Create an unordered list to hold the tasks
-    var lists = document.createElement("ul");
+    const lists = document.createElement("ul");
     lists.classList.add("lists");
     addTaskCont.appendChild(lists);
     // Append the new task list container
     container.appendChild(addTaskCont);
+    if (tasks.length === 0) {
+        notFoundUi();
+    }
     // Loop through each task and create a list item
-    tasks.forEach(function (task) {
-        var list = document.createElement("li");
+    tasks.forEach((task) => {
+        const list = document.createElement("li");
         list.classList.add("list");
         // Create a checkbox for each task
-        var checkbox = document.createElement("input");
+        const checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
-        checkbox.setAttribute("id", "list".concat(task.id));
-        checkbox.setAttribute("data-id", "".concat(task.id));
+        checkbox.setAttribute("id", `list${task.id}`);
+        checkbox.setAttribute("data-id", `${task.id}`);
         checkbox.classList.add("check-box");
         checkbox.checked = task.completed;
         // Create a label to display the task text
-        var label = document.createElement("label");
-        label.setAttribute("for", "list".concat(task.id));
+        const label = document.createElement("label");
+        label.setAttribute("for", `list${task.id}`);
         label.textContent = task.text;
         // Create buttons for modifying (delete and edit) the task
-        var modify = document.createElement("div");
+        const modify = document.createElement("div");
         modify.classList.add("modify");
-        var deleteButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
         deleteButton.classList.add("delete");
         deleteButton.textContent = "Delete";
-        deleteButton.setAttribute("data-id", "".concat(task.id));
-        var editButton = document.createElement("button");
+        deleteButton.setAttribute("data-id", `${task.id}`);
+        const editButton = document.createElement("button");
         editButton.classList.add("edit");
         editButton.textContent = "Edit";
-        editButton.setAttribute("data-id", "".concat(task.id));
+        editButton.setAttribute("data-id", `${task.id}`);
         // Append delete and edit buttons to the task
         modify.appendChild(deleteButton);
         modify.appendChild(editButton);
@@ -212,24 +232,31 @@ function viewTodoList() {
     });
 }
 // === main function ===
+// complete task
+function completeTask(taskId) {
+    const tasks = getData();
+    const index = tasks.findIndex((task) => task.id === taskId);
+    tasks[index].completed = !tasks[index].completed;
+    save(tasks);
+    viewTodoList();
+}
+// search task
+function searchTask(searchTerm) {
+    const tasks = getData();
+    const filteredTasks = tasks.filter((task) => task.text.toLowerCase().includes(searchTerm.toLowerCase()));
+    viewTodoList(filteredTasks);
+}
 // remove task
 function removeTask(taskId) {
-    var tasks = getData();
-    var updatedTasks = tasks.filter(function (task) { return task.id !== taskId; });
+    const tasks = getData();
+    const updatedTasks = tasks.filter((task) => task.id !== taskId);
     save(updatedTasks);
     viewTodoList();
 }
 // edit task
 function editTask(id, text) {
-    var tasks = getData();
-    // const index = tasks.findIndex((task) => task.id === id);
-    var index = -1;
-    for (var i = 0; i < tasks.length; i++) {
-        if (tasks[i].id === id) {
-            index = i;
-            break;
-        }
-    }
+    const tasks = getData();
+    const index = tasks.findIndex((task) => task.id === id);
     tasks[index].text = text;
     save(tasks);
     viewTodoList();
@@ -239,9 +266,9 @@ function editTask(id, text) {
 creatMainUi();
 // === Event Listeners ===
 // Handle "Add Task" Button click to show the form or toggle its visibility
-var addTaskBtn = document.querySelector("#addTask");
+const addTaskBtn = document.querySelector("#addTask");
 addTaskBtn.addEventListener("click", function () {
-    var addTaskContent = document.querySelector(".add-task-cont");
+    const addTaskContent = document.querySelector(".add-task-cont");
     // If the form exists, toggle its visibility (show/hide)
     if (addTaskContent) {
         addTaskContent.classList.toggle("hidden");
@@ -251,16 +278,25 @@ addTaskBtn.addEventListener("click", function () {
         addTdoListUi();
     }
 });
-// Handle removing a task
-var container = document.querySelector(".container");
+// Handle removing and editing and searching a task
+const container = document.querySelector(".container");
 container.addEventListener("click", function (event) {
-    var target = event.target;
+    const target = event.target;
     if (target.classList.contains("delete")) {
-        var taskId = Number(target.getAttribute("data-id"));
+        const taskId = Number(target.getAttribute("data-id"));
         removeTask(taskId);
     }
     else if (target.classList.contains("edit")) {
-        var taskId = Number(target.getAttribute("data-id"));
+        const taskId = Number(target.getAttribute("data-id"));
         editTaskUi(taskId);
+    }
+    else if (target.id === "searchButton") {
+        const searchInput = document.querySelector("#searchInput");
+        const searchTerm = searchInput.value;
+        searchTask(searchTerm);
+    }
+    else if (target.classList.contains("check-box")) {
+        const taskId = Number(target.getAttribute("data-id"));
+        completeTask(taskId);
     }
 });

@@ -15,24 +15,39 @@ function getData(): Task[] {
 }
 
 // Save task to localStorage
-function saveTodoData(task: Task) {
+function saveTodoData(task: Task): void {
   const storgeData = localStorage.getItem("toDoLists");
   const data = storgeData ? (JSON.parse(storgeData) as Task[]) : [];
 
   // Add the new task to the array
-  data.unshift(task);
+  data.push(task);
   localStorage.setItem("toDoLists", JSON.stringify(data));
 }
 
 // save tasks to localStorage
-function save(tasks: Task[]) {
+function save(tasks: Task[]): void {
   localStorage.setItem("toDoLists", JSON.stringify(tasks));
 }
 
 // === UI Functions ===
 
+// Not found or empty list UI
+function notFoundUi(): void {
+  const lists = document.querySelector(".lists") as HTMLElement;
+  const imge = document.createElement("img");
+  imge.setAttribute("src", "../imge/empty.png");
+  imge.setAttribute("alt", "not-found");
+
+  lists.appendChild(imge);
+  lists.classList.add("not-found");
+  const notFound = document.querySelector(".not-found") as HTMLElement;
+  if (notFound) {
+    notFound.style.display = "block";
+  }
+}
+
 // Add To-Do list UI
-function addTdoListUi() {
+function addTdoListUi(): void {
   // Create the container for the "Add Task" form
   const addContiner = document.createElement("div");
   addContiner.classList.add("add-task-cont");
@@ -101,7 +116,7 @@ function addTdoListUi() {
 }
 
 // edit task UI
-function editTaskUi(id: number) {
+function editTaskUi(id: number): void {
   const editContiner = document.createElement("div");
   editContiner.classList.add("edit-task-cont");
   const container = document.querySelector(".container");
@@ -128,7 +143,7 @@ function editTaskUi(id: number) {
   const editBtn = document.createElement("button");
   editBtn.classList.add("editButton");
   editBtn.setAttribute("id", "editButton");
-  editBtn.textContent = "Edit";
+  editBtn.textContent = "Save";
   editBtns.appendChild(editBtn);
 
   const cancelEditBtn = document.createElement("button");
@@ -197,14 +212,18 @@ function creatMainUi(): void {
   addTask.setAttribute("id", "addTask");
   container.appendChild(addTask);
 
+  // get data and check for empty list
+
   viewTodoList();
 }
 
 // === Task List Rendering ===
 
 // Display the to-do list (tasks) in the UI
-function viewTodoList(): void {
-  const tasks = getData();
+function viewTodoList(tasks?: Task[]): void {
+  if (!tasks) {
+    tasks = getData();
+  }
   // Get the container to append the task list
   const container = document.querySelector(".container") as HTMLDivElement;
 
@@ -225,6 +244,10 @@ function viewTodoList(): void {
 
   // Append the new task list container
   container.appendChild(addTaskCont);
+
+  if (tasks.length === 0) {
+    notFoundUi();
+  }
 
   // Loop through each task and create a list item
   tasks.forEach((task) => {
@@ -271,8 +294,27 @@ function viewTodoList(): void {
 }
 
 // === main function ===
+// complete task
+function completeTask(taskId: number): void {
+  const tasks = getData();
+  const index = tasks.findIndex((task) => task.id === taskId);
+  tasks[index].completed = !tasks[index].completed;
+  save(tasks);
+  viewTodoList();
+}
+
+// search task
+function searchTask(searchTerm: string): void {
+  const tasks = getData();
+  const filteredTasks = tasks.filter((task) =>
+    task.text.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  viewTodoList(filteredTasks);
+}
+
 // remove task
-function removeTask(taskId: number) {
+function removeTask(taskId: number): void {
   const tasks = getData();
   const updatedTasks: Task[] = tasks.filter((task) => task.id !== taskId);
   save(updatedTasks);
@@ -280,16 +322,10 @@ function removeTask(taskId: number) {
 }
 
 // edit task
-function editTask(id: number, text: string) {
+function editTask(id: number, text: string): void {
   const tasks = getData();
-  // const index = tasks.findIndex((task) => task.id === id);
-  let index: number = -1;
-  for (var i = 0; i < tasks.length; i++) {
-    if (tasks[i].id === id) {
-      index = i;
-      break;
-    }
-  }
+  const index = tasks.findIndex((task) => task.id === id);
+
   tasks[index].text = text;
   save(tasks);
   viewTodoList();
@@ -316,7 +352,7 @@ addTaskBtn.addEventListener("click", function () {
   }
 });
 
-// Handle removing a task
+// Handle removing and editing and searching a task
 const container = document.querySelector(".container") as HTMLDivElement;
 container.addEventListener("click", function (event) {
   const target = event.target as HTMLElement;
@@ -326,5 +362,14 @@ container.addEventListener("click", function (event) {
   } else if (target.classList.contains("edit")) {
     const taskId = Number(target.getAttribute("data-id"));
     editTaskUi(taskId);
+  } else if (target.id === "searchButton") {
+    const searchInput = document.querySelector(
+      "#searchInput"
+    ) as HTMLButtonElement;
+    const searchTerm = searchInput.value;
+    searchTask(searchTerm);
+  } else if (target.classList.contains("check-box")) {
+    const taskId = Number(target.getAttribute("data-id"));
+    completeTask(taskId);
   }
 });
