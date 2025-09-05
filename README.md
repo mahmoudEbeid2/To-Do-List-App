@@ -5,7 +5,7 @@ The app uses **DOM manipulation** to generate all interface elements dynamically
 
 ## 🚀 Live Preview
 
-[👉 Click here to view the app](https://your-live-link.com)  
+[👉 Click here to view the app](https://to-do-list-app-two-mocha.vercel.app/)  
 _(Replace with your deployed link, e.g., GitHub Pages or Vercel)_
 
 ---
